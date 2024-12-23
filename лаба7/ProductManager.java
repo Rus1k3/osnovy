@@ -29,10 +29,10 @@ class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", weight=" + weight +
+        return "Продукт{" +
+                "Название='" + name + '\'' +
+                ",Цена=" + price +
+                ",Вес=" + weight +
                 '}';
     }
 }

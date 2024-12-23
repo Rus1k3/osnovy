@@ -210,13 +210,13 @@ class GuardWorker extends Employee {
 public class Main {
     public static void main(String[] args) {
         KitchenWorker chef = new KitchenWorker("Константин", "Ивлев", "Муж", true, 
-                                                "Чертила", 50000, 0, "Типо кухня", 
-                                                "Инфоцыган", true);
+                                                "Чертила", 50000, 0, "Инфоциган", 
+                                                "Типо кухня", true);
         chef.work();
         chef.cook();
 
         OfficeWorker manager = new OfficeWorker("Аким", "Чертилла", "Муж", true, 
-                                                "бездельник", 600, 5, "Office", 
+                                                "Раб", 600, 5, "Оффис", 
                                                 "10", false);
         manager.work();
         manager.attendMeeting();

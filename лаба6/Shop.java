@@ -4,7 +4,6 @@ public class Shop {
     private Product[] products;
     private int numberOfSellers;
 
-    // Вложенный класс Товар
     public static class Product {
         private double weight;
         private double price; 
@@ -99,12 +98,11 @@ public class Shop {
     }
 }
 
-// Класс Супермаркет
+
 public class laba6 extends Shop {
     private double shopArea;
     private String[] categories;
 
-    // Конструкторы
     public laba6() {
         this(0.0, new String[0]);
     }
