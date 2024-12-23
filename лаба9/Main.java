@@ -99,27 +99,27 @@ class Group {
 
     public void addStudent() {
         if (students.size() >= MAX_STUDENTS) {
-            System.out.println("Невозможно добавить студента: группа переполнена");
+            System.out.println("группа переполнена");
             return;
         }
 
         Scanner scanner = new Scanner(System.in);
 
         try {
-            System.out.println("Введите возраст:");
+            System.out.println("возраст:");
             int age = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("Введите пол:");
+            System.out.println("пол:");
             String gender = scanner.nextLine();
-            System.out.println("Введите имя:");
+            System.out.println("имя:");
             String firstName = scanner.nextLine();
-            System.out.println("Введите фамилию:");
+            System.out.println("фамилию:");
             String lastName = scanner.nextLine();
-            System.out.println("Введите отчество:");
+            System.out.println("отчество:");
             String middleName = scanner.nextLine();
-            System.out.println("Введите курс:");
+            System.out.println("курс:");
             int course = scanner.nextInt();
-            System.out.println("Введите средний балл:");
+            System.out.println("средний балл:");
             double averageGrade = scanner.nextDouble();
 
             Student student = new Student(age, gender, firstName, lastName, middleName, course, averageGrade);
@@ -131,7 +131,7 @@ class Group {
 
     public void addStudent(Student student) {
         if (students.size() >= MAX_STUDENTS) {
-            System.out.println("Невозможно добавить студента: группа переполнена");
+            System.out.println("группа переполнена");
             return;
         }
         students.add(student);
