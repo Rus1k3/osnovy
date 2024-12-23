@@ -34,7 +34,7 @@ class Student {
 
     public void setAge(int age) throws NotCorrectAgeException {
         if (age < 16 || age > 60) {
-            throw new NotCorrectAgeException("Возраст должен быть в диапазоне от 16 до 60 лет");
+            throw new NotCorrectAgeException("Возраст должен быть в диапазоне от 16 до 60");
         }
         this.age = age;
     }
@@ -99,7 +99,7 @@ class Group {
 
     public void addStudent() {
         if (students.size() >= MAX_STUDENTS) {
-            System.out.println("Невозможно добавить студента: группа уже переполнена.");
+            System.out.println("Невозможно добавить студента: группа переполнена");
             return;
         }
 
@@ -131,7 +131,7 @@ class Group {
 
     public void addStudent(Student student) {
         if (students.size() >= MAX_STUDENTS) {
-            System.out.println("Невозможно добавить студента: группа уже переполнена.");
+            System.out.println("Невозможно добавить студента: группа переполнена");
             return;
         }
         students.add(student);
@@ -139,11 +139,11 @@ class Group {
 
     public void removeStudent(int index) {
         if (index < 0 || index >= students.size()) {
-            System.out.println("Неверный индекс студента.");
+            System.out.println("Неверный индекс");
             return;
         }
         if (students.size() <= MIN_STUDENTS) {
-            System.out.println("Невозможно удалить студента: группа должна содержать минимум " + MIN_STUDENTS + " студента.");
+            System.out.println("группа должна содержать минимум " + MIN_STUDENTS + " студента");
             return;
         }
         students.remove(index);
@@ -151,7 +151,7 @@ class Group {
 
     public Student getStudent(int index) {
         if (index < 0 || index >= students.size()) {
-            System.out.println("Неверный индекс студента.");
+            System.out.println("Неверный индекс");
             return null;
         }
         return students.get(index);
