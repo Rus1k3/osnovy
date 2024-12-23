@@ -52,15 +52,15 @@ class Employee extends Person {
     private String position;
     private double payment;
     private int experience;
-    private String department;
+    private String where;
 
     public Employee(String name, String surname, String gender, boolean active, 
-                    String position, double payment, int experience, String department) {
+                    String position, double payment, int experience, String where) {
         super(name, surname, gender, active);
         this.position = position;
         this.payment = payment;
         this.experience = experience;
-        this.department = department;
+        this.where = where;
     }
 
     public String getPosition() {
@@ -87,16 +87,16 @@ class Employee extends Person {
         this.experience = experience;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getwhere() {
+        return where;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setwhere(String where) {
+        this.where = where;
     }
 
     public void work() {
-        System.out.println(getName() + " Вкалывает " + position + " в " + department);
+        System.out.println(getName() + " Вкалывает " + position + " в " + where);
     }
 }
 
@@ -105,9 +105,9 @@ class KitchenWorker extends Employee {
     private boolean hasChefTraining;
 
     public KitchenWorker(String name, String surname, String gender, boolean active, 
-                         String position, double payment, int experience, String department,
+                         String position, double payment, int experience, String where,
                          String specialty, boolean hasChefTraining) {
-        super(name, surname, gender, active, position, payment, experience, department);
+        super(name, surname, gender, active, position, payment, experience, where);
         this.specialty = specialty;
         this.hasChefTraining = hasChefTraining;
     }
@@ -138,9 +138,9 @@ class OfficeWorker extends Employee {
     private boolean remoteWork;
 
     public OfficeWorker(String name, String surname, String gender, boolean active, 
-                        String position, double payment, int experience, String department,
+                        String position, double payment, int experience, String where,
                         String officeNumber, boolean remoteWork) {
-        super(name, surname, gender, active, position, payment, experience, department);
+        super(name, surname, gender, active, position, payment, experience, where);
         this.officeNumber = officeNumber;
         this.remoteWork = remoteWork;
     }
@@ -171,9 +171,9 @@ class GuardWorker extends Employee {
     private boolean armed;
 
     public GuardWorker(String name, String surname, String gender, boolean active, 
-                       String position, double payment, int experience, String department,
+                       String position, double payment, int experience, String where,
                        String shift, boolean armed) {
-        super(name, surname, gender, active, position, payment, experience, department);
+        super(name, surname, gender, active, position, payment, experience, where);
         this.shift = shift;
         this.armed = armed;
     }
