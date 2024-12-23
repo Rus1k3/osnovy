@@ -6,22 +6,22 @@ class Student {
     private String patronymic;
     private int age;
     private double averageGrade;
-    private double scholarship;
+    private double stepyha;
     private int attendedClasses;
     private int missedClasses;
     private String gender;
 
     public Student(String firstName, String lastName, String patronymic, int age, double averageGrade, 
-                   double scholarship, int attendedClasses, int missedClasses, String gender) {
+                   double stepyha, int attendedClasses, int missedClasses, String gender) {
         if (firstName.equals("Алексей") && lastName.equals("Белоусов")) {
-            throw new IllegalArgumentException("Такой студент не может существовать.");
+            throw new IllegalArgumentException("Такой студент не может существовать");
         }
         this.firstName = firstName;
         this.lastName = lastName;
         this.patronymic = patronymic;
         this.age = age;
         this.averageGrade = averageGrade;
-        this.scholarship = scholarship;
+        this.stepyha = stepyha;
         this.attendedClasses = attendedClasses;
         this.missedClasses = missedClasses;
         this.gender = gender;
@@ -51,12 +51,12 @@ class Student {
         this.averageGrade = averageGrade;
     }
 
-    public double getScholarship() {
-        return scholarship;
+    public double getstepyha() {
+        return stepyha;
     }
 
-    public void setScholarship(double scholarship) {
-        this.scholarship = scholarship;
+    public void setstepyha(double stepyha) {
+        this.stepyha = stepyha;
     }
 
     public void addAttendance(boolean attended) {
@@ -75,7 +75,7 @@ class Student {
     @Override
     public String toString() {
         return String.format("ФИО: %s %s %s, Возраст: %d, Средняя оценка: %.2f, Стипендия: %.2f, Посещаемость: %.2f%%",
-                lastName, firstName, patronymic, age, averageGrade, scholarship, getAttendancePercentage());
+                lastName, firstName, patronymic, age, averageGrade, stepyha, getAttendancePercentage());
     }
 }
 
@@ -85,9 +85,9 @@ class AverageGradeComparator implements Comparator<Student> {
     }
 }
 
-class ScholarshipComparator implements Comparator<Student> {
+class stepyhaComparator implements Comparator<Student> {
     public int compare(Student s1, Student s2) {
-        return Double.compare(s2.getScholarship(), s1.getScholarship());
+        return Double.compare(s2.getstepyha(), s1.getstepyha());
     }
 }
 
@@ -105,7 +105,7 @@ class AttendanceComparator implements Comparator<Student> {
 
 public class StudentManagement {
     private static TreeSet<Student> studentsByGrade = new TreeSet<>(new AverageGradeComparator());
-    private static TreeSet<Student> studentsByScholarship = new TreeSet<>(new ScholarshipComparator());
+    private static TreeSet<Student> studentsBystepyha = new TreeSet<>(new stepyhaComparator());
     private static TreeSet<Student> studentsByAge = new TreeSet<>(new AgeComparator());
 
     public static void main(String[] args) {
@@ -127,17 +127,17 @@ public class StudentManagement {
                     case 1 -> addStudent(scanner);
                     case 2 -> removeStudent(scanner);
                     case 3 -> updateGrade(scanner);
-                    case 4 -> updateScholarship(scanner);
+                    case 4 -> updatestepyha(scanner);
                     case 5 -> addAttendance(scanner);
                     case 6 -> displayStudents();
                     case 0 -> {
-                        System.out.println("Выход из программы.");
+                        System.out.println("Выход........");
                         return;
                     }
                     default -> System.out.println("Некорректный выбор");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Пожалуйста введите число");
+                System.out.println("Пожалуйста введите чтото");
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -157,7 +157,7 @@ public class StudentManagement {
             System.out.print("Введите среднюю оценку: ");
             double grade = Double.parseDouble(scanner.nextLine());
             System.out.print("Введите стипендию: ");
-            double scholarship = Double.parseDouble(scanner.nextLine());
+            double stepyha = Double.parseDouble(scanner.nextLine());
             System.out.print("Введите количество посещенных занятий: ");
             int attended = Integer.parseInt(scanner.nextLine());
             System.out.print("Введите количество пропущенных занятий: ");
@@ -165,9 +165,9 @@ public class StudentManagement {
             System.out.print("Введите пол: ");
             String gender = scanner.nextLine();
 
-            Student student = new Student(firstName, lastName, patronymic, age, grade, scholarship, attended, missed, gender);
+            Student student = new Student(firstName, lastName, patronymic, age, grade, stepyha, attended, missed, gender);
             studentsByGrade.add(student);
-            studentsByScholarship.add(student);
+            studentsBystepyha.add(student);
             studentsByAge.add(student);
             System.out.println("Студент успешно добавлен");
         } catch (NumberFormatException e) {
@@ -179,7 +179,7 @@ public class StudentManagement {
         System.out.print("Введите фамилию студента для удаления: ");
         String lastName = scanner.nextLine();
         studentsByGrade.removeIf(s -> s.getLastName().equals(lastName));
-        studentsByScholarship.removeIf(s -> s.getLastName().equals(lastName));
+        studentsBystepyha.removeIf(s -> s.getLastName().equals(lastName));
         studentsByAge.removeIf(s -> s.getLastName().equals(lastName));
         System.out.println("Студент успешно удален");
     }
@@ -197,7 +197,7 @@ public class StudentManagement {
         });
     }
 
-    private static void updateScholarship(Scanner scanner) {
+    private static void updatestepyha(Scanner scanner) {
     }
 
     private static void addAttendance(Scanner scanner) {
@@ -221,7 +221,7 @@ public class StudentManagement {
                 }
                 case 2 -> {
                     System.out.println("\nСписок студентов сортировка по стипендии:");
-                    studentsByScholarship.forEach(System.out::println);
+                    studentsBystepyha.forEach(System.out::println);
                 }
                 case 3 -> {
                     System.out.println("\nСписок студентов сортировка по возрасту:");
@@ -233,7 +233,7 @@ public class StudentManagement {
                     studentsByAttendance.addAll(studentsByGrade);
                     studentsByAttendance.forEach(System.out::println);
                 }
-                default -> System.out.println("Некорректный выбор. Попробуйте снова.");
+                default -> System.out.println("");
             }
         } catch (NumberFormatException e) {
             System.out.println("Пожалуйста введите число");
