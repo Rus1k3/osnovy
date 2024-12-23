@@ -88,7 +88,6 @@ class Student {
     }
 }
 
-// Класс Группа
 class Group {
     private final int MAX_STUDENTS = 15;
     private final int MIN_STUDENTS = 3;
