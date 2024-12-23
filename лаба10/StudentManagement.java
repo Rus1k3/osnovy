@@ -14,7 +14,7 @@ class Student {
     public Student(String firstName, String lastName, String patronymic, int age, double averageGrade, 
                    double stepyha, int attendedClasses, int missedClasses, String gender) {
         if (firstName.equals("Алексей") && lastName.equals("Белоусов")) {
-            throw new IllegalArgumentException("Такой студент не может существовать");
+            throw new IllegalArgumentException("Это не студент)");
         }
         this.firstName = firstName;
         this.lastName = lastName;
