@@ -1,15 +1,8 @@
-interface Worker {
-    default void work() {
-        System.out.println("Грузим");
-    }
-}
-
 class Person {
     private String name;
     private String surname;
     private String gender;
     private boolean active;
-
 
     public Person(String name, String surname, String gender, boolean active) {
         this.name = name;
@@ -55,7 +48,7 @@ class Person {
     }
 }
 
-class Employee extends Person implements Worker {
+class Employee extends Person {
     private String position;
     private double payment;
     private int experience;
@@ -102,7 +95,6 @@ class Employee extends Person implements Worker {
         this.department = department;
     }
 
-    @Override
     public void work() {
         System.out.println(getName() + " Вкалывает " + position + " в " + department);
     }
