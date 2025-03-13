@@ -1,0 +1,20 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dateFormatter" class="java.text.SimpleDateFormat">
+        <constructor-arg value="yyyy-MM-dd"/>
+    </bean>
+
+    <bean id="birthDate" class="java.util.Date" factory-bean="dateFormatter" factory-method="parse">
+        <constructor-arg value="1980-10-12"/>
+    </bean>
+
+    <bean id="person" class="org.example.laba_2.Person">
+        <constructor-arg value="Райан"/>
+        <constructor-arg value="Гослинг"/>
+        <constructor-arg ref="birthDate"/>
+    </bean>
+
+</beans>
