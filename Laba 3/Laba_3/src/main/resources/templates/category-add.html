@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить категорию</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        .error {
+            color: red;
+        }
+        form {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            width: 200px;
+        }
+        input[type="submit"] {
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Добавить новую категорию</h1>
+    <form method="post" action="/categories/add">
+        <label for="name">Название категории:</label>
+        <input type="text" id="name" name="name" th:value="${categoryName}"/>
+        <input type="submit" value="Добавить"/>
+    </form>
+    <div th:if="${error != null}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+    <p><a href="/categories/list">Вернуться к списку категорий</a></p>
+    <p><a href="/categories">Вернуться к категориям</a></p>
+    <p><a href="/calculate?first=10&second=5&operation=add">Перейти к калькулятору</a></p>
+</body>
+</html>

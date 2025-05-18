@@ -1,10 +1,10 @@
 package com.example.vnatyre_blen;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -13,32 +13,21 @@ import java.util.Map;
 @Controller
 public class BookCategoryController {
     private final BookCategoryViewer viewer;
-    private final BookCategory fantasyCategory;
-    private final BookCategory horrorCategory;
-    private final BookCategory scifiCategory;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public BookCategoryController(
-            BookCategoryViewer viewer,
-            @Qualifier("fantasyCategory") BookCategory fantasyCategory,
-            @Qualifier("horrorCategory") BookCategory horrorCategory,
-            @Qualifier("scifiCategory") BookCategory scifiCategory) {
+    public BookCategoryController(BookCategoryViewer viewer, CategoryRepository categoryRepository) {
         this.viewer = viewer;
-        this.fantasyCategory = fantasyCategory;
-        this.horrorCategory = horrorCategory;
-        this.scifiCategory = scifiCategory;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/categories")
     public String showCategories(Model model) {
         Map<String, String> categoryDisplays = new HashMap<>();
-        categoryDisplays.put("Фэнтези", viewer.getDisplayPrefix() + fantasyCategory.getName());
-        categoryDisplays.put("Хоррор", viewer.getDisplayPrefix() + horrorCategory.getName());
-        categoryDisplays.put("Научная фантастика", viewer.getDisplayPrefix() + scifiCategory.getName());
-
+        categoryRepository.getAllCategories().forEach((key, category) ->
+                categoryDisplays.put(key, viewer.getDisplayPrefix() + category.getName()));
         model.addAttribute("categoryDisplays", categoryDisplays);
         model.addAttribute("viewerPrefix", viewer.getDisplayPrefix());
-
         return "categories";
     }
 
@@ -81,42 +70,55 @@ public class BookCategoryController {
             model.addAttribute("second", second);
             model.addAttribute("operation", operation);
         }
-
         return "calculate";
     }
 
     @GetMapping("/categories/list")
     public String listCategories(Model model) {
         Map<String, String> categoryDisplays = new HashMap<>();
-        categoryDisplays.put("fantasy", viewer.getDisplayPrefix() + fantasyCategory.getName());
-        categoryDisplays.put("horror", viewer.getDisplayPrefix() + horrorCategory.getName());
-        categoryDisplays.put("scifi", viewer.getDisplayPrefix() + scifiCategory.getName());
-
+        categoryRepository.getAllCategories().forEach((key, category) ->
+                categoryDisplays.put(key, viewer.getDisplayPrefix() + category.getName()));
         model.addAttribute("categories", categoryDisplays);
         return "category-list";
     }
 
     @GetMapping("/categories/detail")
-    public String showCategoryDetail(@RequestParam("name") String name, Model model) {
-        String displayName;
-        switch (name.toLowerCase()) {
-            case "fantasy":
-                displayName = viewer.getDisplayPrefix() + fantasyCategory.getName();
-                break;
-            case "horror":
-                displayName = viewer.getDisplayPrefix() + horrorCategory.getName();
-                break;
-            case "scifi":
-                displayName = viewer.getDisplayPrefix() + scifiCategory.getName();
-                break;
-            default:
-                model.addAttribute("error", "Категория не найдена: " + name);
-                model.addAttribute("category", null);
-                return "category-detail";
+    public String showCategoryDetail(@RequestParam(value = "name", required = false) String name, Model model) {
+        if (name == null || name.trim().isEmpty()) {
+            model.addAttribute("error", "Параметр name не указан");
+            model.addAttribute("category", null);
+            return "category-detail";
         }
-
-        model.addAttribute("category", Map.of("name", name, "displayName", displayName));
-        model.addAttribute("error", null);
+        BookCategory category = categoryRepository.getCategory(name);
+        if (category == null) {
+            model.addAttribute("error", "Категория не найдена: " + name);
+            model.addAttribute("category", null);
+        } else {
+            model.addAttribute("category", Map.of("name", name, "displayName", viewer.getDisplayPrefix() + category.getName()));
+            model.addAttribute("error", null);
+        }
         return "category-detail";
+    }
+
+    @GetMapping("/categories/add")
+    public String showAddCategoryForm(Model model) {
+        model.addAttribute("categoryName", "");
+        return "category-add";
+    }
+
+    @PostMapping("/categories/add")
+    public String addCategory(@RequestParam("name") String name, Model model) {
+        if (name == null || name.trim().isEmpty()) {
+            model.addAttribute("error", "Название категории не может быть пустым");
+            model.addAttribute("categoryName", "");
+            return "category-add";
+        }
+        if (categoryRepository.getCategory(name.toLowerCase()) != null) {
+            model.addAttribute("error", "Категория с таким именем уже существует");
+            model.addAttribute("categoryName", name);
+            return "category-add";
+        }
+        categoryRepository.addCategory(name);
+        return "redirect:/categories/list";
     }
 }
