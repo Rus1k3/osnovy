@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список категорий</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        .category {
+            margin: 10px 0;
+        }
+        .category a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+        .category a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список категорий книг</h1>
+    <div th:each="entry : ${categories}">
+        <div class="category">
+            <a th:href="@{/categories/detail(name=${entry.key})}" th:text="${entry.value}"></a>
+        </div>
+    </div>
+    <p><a href="/categories">Вернуться к категориям</a></p>
+    <p><a href="/calculate?first=10&second=5&operation=add">Перейти к калькулятору</a></p>
+</body>
+</html>

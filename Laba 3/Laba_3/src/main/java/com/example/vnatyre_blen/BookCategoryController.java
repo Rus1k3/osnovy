@@ -84,4 +84,39 @@ public class BookCategoryController {
 
         return "calculate";
     }
+
+    @GetMapping("/categories/list")
+    public String listCategories(Model model) {
+        Map<String, String> categoryDisplays = new HashMap<>();
+        categoryDisplays.put("fantasy", viewer.getDisplayPrefix() + fantasyCategory.getName());
+        categoryDisplays.put("horror", viewer.getDisplayPrefix() + horrorCategory.getName());
+        categoryDisplays.put("scifi", viewer.getDisplayPrefix() + scifiCategory.getName());
+
+        model.addAttribute("categories", categoryDisplays);
+        return "category-list";
+    }
+
+    @GetMapping("/categories/detail")
+    public String showCategoryDetail(@RequestParam("name") String name, Model model) {
+        String displayName;
+        switch (name.toLowerCase()) {
+            case "fantasy":
+                displayName = viewer.getDisplayPrefix() + fantasyCategory.getName();
+                break;
+            case "horror":
+                displayName = viewer.getDisplayPrefix() + horrorCategory.getName();
+                break;
+            case "scifi":
+                displayName = viewer.getDisplayPrefix() + scifiCategory.getName();
+                break;
+            default:
+                model.addAttribute("error", "Категория не найдена: " + name);
+                model.addAttribute("category", null);
+                return "category-detail";
+        }
+
+        model.addAttribute("category", Map.of("name", name, "displayName", displayName));
+        model.addAttribute("error", null);
+        return "category-detail";
+    }
 }
