@@ -21,13 +21,33 @@
         .category a:hover {
             text-decoration: underline;
         }
+        .category form {
+            display: inline;
+            margin-left: 10px;
+        }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
     <h1>Список категорий книг</h1>
+    <div th:if="${error != null}" class="error">
+        <p th:text="${error}"></p>
+    </div>
     <div th:each="entry : ${categories}">
         <div class="category">
             <a th:href="@{/categories/detail(name=${entry.key})}" th:text="${entry.value}"></a>
+            <form method="post" action="/categories/update" style="display:inline;">
+                <input type="hidden" name="_method" value="PATCH"/>
+                <input type="hidden" name="oldName" th:value="${entry.key}"/>
+                <a th:href="@{/categories/update(name=${entry.key})}">Обновить</a>
+            </form>
+            <form method="post" action="/categories/delete" style="display:inline;">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <input type="hidden" name="name" th:value="${entry.key}"/>
+                <input type="submit" value="Удалить"/>
+            </form>
         </div>
     </div>
     <p><a href="/categories/add">Добавить новую категорию</a></p>

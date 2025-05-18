@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Обновить категорию</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        .error {
+            color: red;
+        }
+        form {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            width: 200px;
+        }
+        input[type="submit"] {
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Обновить категорию</h1>
+    <form method="post" action="/categories/update">
+        <input type="hidden" name="_method" value="PATCH"/>
+        <label for="oldName">Текущее имя категории:</label>
+        <input type="text" id="oldName" name="oldName" th:value="${oldName}" readonly/>
+        <label for="newName">Новое имя категории:</label>
+        <input type="text" id="newName" name="newName" th:value="${newName}"/>
+        <input type="submit" value="Обновить"/>
+    </form>
+    <div th:if="${error != null}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+    <p><a href="/categories/list">Вернуться к списку категорий</a></p>
+    <p><a href="/categories">Вернуться к категориям</a></p>
+    <p><a href="/calculate?first=10&second=5&operation=add">Перейти к калькулятору</a></p>
+</body>
+</html>

@@ -121,4 +121,61 @@ public class BookCategoryController {
         categoryRepository.addCategory(name);
         return "redirect:/categories/list";
     }
+
+    @GetMapping("/categories/update")
+    public String showUpdateCategoryForm(@RequestParam(value = "name", required = false) String name, Model model) {
+        if (name == null || name.trim().isEmpty() || categoryRepository.getCategory(name) == null) {
+            model.addAttribute("error", name == null ? "Параметр name не указан" : "Категория не найдена: " + name);
+            model.addAttribute("oldName", "");
+            model.addAttribute("newName", "");
+            return "category-update";
+        }
+        model.addAttribute("oldName", name);
+        model.addAttribute("newName", categoryRepository.getCategory(name).getName());
+        model.addAttribute("error", null);
+        return "category-update";
+    }
+
+    @PostMapping("/categories/update")
+    public String updateCategory(
+            @RequestParam("oldName") String oldName,
+            @RequestParam("newName") String newName,
+            Model model) {
+        if (oldName == null || oldName.trim().isEmpty() || newName == null || newName.trim().isEmpty()) {
+            model.addAttribute("error", "Имена не могут быть пустыми");
+            model.addAttribute("oldName", oldName);
+            model.addAttribute("newName", newName);
+            return "category-update";
+        }
+        if (categoryRepository.getCategory(oldName) == null) {
+            model.addAttribute("error", "Категория не найдена: " + oldName);
+            model.addAttribute("oldName", oldName);
+            model.addAttribute("newName", newName);
+            return "category-update";
+        }
+        if (categoryRepository.getCategory(newName) != null) {
+            model.addAttribute("error", "Категория с именем уже существует: " + newName);
+            model.addAttribute("oldName", oldName);
+            model.addAttribute("newName", newName);
+            return "category-update";
+        }
+        categoryRepository.updateCategory(oldName, newName);
+        return "redirect:/categories/list";
+    }
+
+    @PostMapping("/categories/delete")
+    public String deleteCategory(@RequestParam("name") String name, Model model) {
+        if (name == null || name.trim().isEmpty()) {
+            model.addAttribute("error", "Имя не может быть пустым");
+            model.addAttribute("categories", new HashMap<>());
+            return "category-list";
+        }
+        if (categoryRepository.getCategory(name) == null) {
+            model.addAttribute("error", "Категория не найдена: " + name);
+            model.addAttribute("categories", new HashMap<>());
+            return "category-list";
+        }
+        categoryRepository.deleteCategory(name);
+        return "redirect:/categories/list";
+    }
 }

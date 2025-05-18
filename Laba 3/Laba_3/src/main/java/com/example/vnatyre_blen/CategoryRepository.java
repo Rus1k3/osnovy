@@ -28,7 +28,6 @@ public class CategoryRepository {
 
     @PostConstruct
     public void init() {
-
         categories.put("fantasy", fantasyCategory);
         categories.put("horror", horrorCategory);
         categories.put("scifi", scifiCategory);
@@ -36,6 +35,17 @@ public class CategoryRepository {
 
     public void addCategory(String name) {
         categories.put(name.toLowerCase(), new CustomCategory(name));
+    }
+
+    public void updateCategory(String oldName, String newName) {
+        if (categories.containsKey(oldName.toLowerCase()) && !categories.containsKey(newName.toLowerCase())) {
+            BookCategory category = categories.remove(oldName.toLowerCase());
+            categories.put(newName.toLowerCase(), new CustomCategory(newName));
+        }
+    }
+
+    public void deleteCategory(String name) {
+        categories.remove(name.toLowerCase());
     }
 
     public BookCategory getCategory(String name) {
