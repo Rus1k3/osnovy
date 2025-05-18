@@ -3,10 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="bookCategoryViewer" class="com.example.BookCategoryViewer"/>
+    <bean id="bookCategoryViewer" class="com.example.vnatyre_blen.BookCategoryViewer" scope="prototype" init-method="init" destroy-method="cleanup">
+        <constructor-arg ref="fantasyCategory"/> 
+        <property name="displayPrefix" value="Книга в жанре: "/> 
+    </bean>
 
-    <bean id="fantasyCategory" class="com.example.FantasyCategory"/>
-    <bean id="horrorCategory" class="com.example.HorrorCategory"/>
-    <bean id="scifiCategory" class="com.example.SciFiCategory"/>
+    <bean id="fantasyCategory" class="com.example.vnatyre_blen.FantasyCategory" scope="singleton" init-method="init" destroy-method="cleanup"/>
+
+    <bean id="horrorCategory" class="com.example.vnatyre_blen.HorrorCategory" scope="singleton" init-method="init" destroy-method="cleanup"/>
+
+    <bean id="scifiCategory" class="com.example.vnatyre_blen.SciFiCategory" scope="singleton" init-method="init" destroy-method="cleanup"/>
 
 </beans>

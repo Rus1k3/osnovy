@@ -1,4 +1,4 @@
-package org.example.laba_3;
+package com.example.vnatyre_blen;
 
 public interface BookCategory {
     String getName();

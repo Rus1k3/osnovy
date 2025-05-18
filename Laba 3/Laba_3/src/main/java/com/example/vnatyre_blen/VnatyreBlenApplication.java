@@ -1,13 +1,13 @@
-package org.example.laba_3;
+package com.example.vnatyre_blen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Laba3Application {
+public class VnatyreBlenApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Laba3Application.class, args);
+		SpringApplication.run(VnatyreBlenApplication.class, args);
 	}
 
 }
