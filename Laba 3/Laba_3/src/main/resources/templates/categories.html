@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Категории книг</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        .category {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Категории книг</h1>
+    <p>Префикс отображения: <span th:text="${viewerPrefix}"></span></p>
+    <h2>Список категорий:</h2>
+    <div th:each="entry : ${categoryDisplays}">
+        <div class="category">
+            <strong th:text="${entry.key}"></strong>: <span th:text="${entry.value}"></span>
+        </div>
+    </div>
+</body>
+</html>
