@@ -178,4 +178,15 @@ public class BookCategoryController {
         categoryRepository.deleteCategory(name);
         return "redirect:/categories/list";
     }
+
+    @GetMapping("/categories/filter")
+    public String showFilterPage(@RequestParam(value = "minNameLength", required = false, defaultValue = "0") int minNameLength, Model model) {
+        Map<String, String> categoryDisplays = new HashMap<>();
+        categoryRepository.getAllCategories().entrySet().stream()
+                .filter(entry -> entry.getValue().getName().length() >= minNameLength)
+                .forEach(entry -> categoryDisplays.put(entry.getKey(), viewer.getDisplayPrefix() + entry.getValue().getName()));
+        model.addAttribute("categories", categoryDisplays);
+        model.addAttribute("minNameLength", minNameLength);
+        return "category-filter";
+    }
 }

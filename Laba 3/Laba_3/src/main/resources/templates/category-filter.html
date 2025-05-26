@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Фильтрация категорий</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .filter-form { margin-bottom: 20px; }
+        .category-list { list-style-type: none; padding: 0; }
+        .category-list li { margin: 5px 0; }
+        .filter-info { font-style: italic; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>Фильтрация категорий</h1>
+    
+    <div class="filter-form">
+        <form th:action="@{/categories/filter}" method="get">
+            <label for="minNameLength">Минимальная длина имени:</label>
+            <input type="number" id="minNameLength" name="minNameLength" th:value="${minNameLength}" min="0" required>
+            <button type="submit">Применить фильтр</button>
+        </form>
+        <p class="filter-info" th:text="'Текущий фильтр: минимум ' + ${minNameLength} + ' символов'"></p>
+    </div>
+
+    <h2>Отфильтрованные категории</h2>
+    <ul class="category-list">
+        <li th:each="entry : ${categories}" th:text="${entry.key} + ': ' + ${entry.value}"></li>
+        <li th:if="${categories.isEmpty()}" th:text="'Нет категорий, соответствующих фильтру'"></li>
+    </ul>
+</body>
+</html>

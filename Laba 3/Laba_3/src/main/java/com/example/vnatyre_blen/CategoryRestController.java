@@ -1,49 +1,90 @@
 package com.example.vnatyre_blen;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryRestController {
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public CategoryRestController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public CategoryRestController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
-    @PatchMapping("/update")
+    @PostMapping("")
+    public ResponseEntity<String> addCategory(@RequestParam("name") String name) {
+        try {
+            categoryService.addCategory(name);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Категория добавлена: " + name);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера");
+        }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllCategories() {
+        try {
+            return ResponseEntity.ok(categoryService.getAllCategories());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера");
+        }
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<?> getCategory(@PathVariable("name") String name) {
+        try {
+            BookCategory category = categoryService.getCategory(name);
+            return ResponseEntity.ok(category);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера");
+        }
+    }
+
+    @PatchMapping("/{name}")
     public ResponseEntity<String> updateCategory(
-            @RequestParam("oldName") String oldName,
+            @PathVariable("name") String oldName,
             @RequestParam("newName") String newName) {
-        if (oldName == null || oldName.trim().isEmpty() || newName == null || newName.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Имена не могут быть пустыми");
+        try {
+            categoryService.updateCategory(oldName, newName);
+            return ResponseEntity.ok("Категория обновлена: " + newName);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера");
         }
-        if (categoryRepository.getCategory(oldName) == null) {
-            return ResponseEntity.badRequest().body("Категория не найдена: " + oldName);
-        }
-        if (categoryRepository.getCategory(newName) != null) {
-            return ResponseEntity.badRequest().body("Категория с именем уже существует: " + newName);
-        }
-        categoryRepository.updateCategory(oldName, newName);
-        return ResponseEntity.ok("Категория обновлена: " + newName);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteCategory(@RequestParam("name") String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Имя не может быть пустым");
+    @DeleteMapping("/{name}")
+    public ResponseEntity<String> deleteCategory(@PathVariable("name") String name) {
+        try {
+            categoryService.deleteCategory(name);
+            return ResponseEntity.ok("Категория удалена: " + name);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера");
         }
-        if (categoryRepository.getCategory(name) == null) {
-            return ResponseEntity.badRequest().body("Категория не найдена: " + name);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterCategories(@RequestParam(value = "minNameLength", defaultValue = "0") int minNameLength) {
+        try {
+            List<BookCategory> categories = categoryService.filterByMinNameLength(minNameLength);
+            return ResponseEntity.ok(categories);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера");
         }
-        categoryRepository.deleteCategory(name);
-        return ResponseEntity.ok("Категория удалена: " + name);
     }
 }

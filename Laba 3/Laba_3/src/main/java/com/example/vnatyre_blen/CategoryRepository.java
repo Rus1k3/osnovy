@@ -1,12 +1,14 @@
 package com.example.vnatyre_blen;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class CategoryRepository {
@@ -38,8 +40,8 @@ public class CategoryRepository {
     }
 
     public void updateCategory(String oldName, String newName) {
-        if (categories.containsKey(oldName.toLowerCase()) && !categories.containsKey(newName.toLowerCase())) {
-            BookCategory category = categories.remove(oldName.toLowerCase());
+        BookCategory category = categories.remove(oldName.toLowerCase());
+        if (category != null) {
             categories.put(newName.toLowerCase(), new CustomCategory(newName));
         }
     }
@@ -54,5 +56,11 @@ public class CategoryRepository {
 
     public Map<String, BookCategory> getAllCategories() {
         return new HashMap<>(categories);
+    }
+
+    public List<BookCategory> filterByMinNameLength(int minLength) {
+        return categories.values().stream()
+                .filter(category -> category.getName().length() >= minLength)
+                .collect(Collectors.toList());
     }
 }
